@@ -17,7 +17,7 @@ html {
 }
 
 body {
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   background-color: var(--color-dark);
   color: var(--color-light);
   overflow-x: hidden;
@@ -32,6 +32,7 @@ body {
   justify-content: center;
   position: relative;
   overflow: hidden;
+  background: var(--color-dark);
 }
 
 .hero-content {
@@ -40,60 +41,31 @@ body {
 }
 
 .name {
-  font-size: clamp(3rem, 12vw, 10rem);
-  font-weight: 700;
+  font-size: clamp(4rem, 15vw, 12rem);
+  font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--color-light);
-  display: inline-block;
-  cursor: default;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  line-height: 0.9;
+  text-transform: lowercase;
 }
 
-/* Individual character animation */
+.line {
+  display: block;
+  white-space: nowrap;
+}
+
+/* Individual character - wave width animation */
 .char {
   display: inline-block;
-  animation: floatIn 1s ease-out forwards;
-  animation-delay: calc(var(--i) * 0.08s);
-  opacity: 0;
-  transform: translateY(100px) rotateX(-90deg);
-  transition: transform 0.3s ease, color 0.3s ease;
-}
-
-.char:hover {
-  color: var(--color-primary);
-  transform: translateY(-10px) scale(1.1);
-}
-
-.char.space {
-  width: 0.3em;
-}
-
-@keyframes floatIn {
-  0% {
-    opacity: 0;
-    transform: translateY(100px) rotateX(-90deg);
-  }
-  60% {
-    transform: translateY(-20px) rotateX(10deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0);
-  }
-}
-
-/* Continuous floating animation after initial load */
-.char.loaded {
-  animation: float 3s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.15s);
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-15px);
-  }
+  font-variation-settings: 'wght' var(--font-weight, 400);
+  transform: scaleX(var(--scale-x, 1));
+  transform-origin: center center;
+  transition: transform 0.1s ease-out;
+  will-change: transform, font-variation-settings;
 }
 
 /* Scroll Sections */
@@ -161,27 +133,4 @@ body {
     transform: translateX(-50%) translateY(20px);
     opacity: 0.3;
   }
-}
-
-/* Parallax background effect */
-.hero {
-  background:
-    radial-gradient(ellipse at 20% 80%, rgba(117, 139, 253, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(174, 184, 254, 0.1) 0%, transparent 50%),
-    var(--color-dark);
-}
-
-/* Mouse trail effect container */
-.cursor-trail {
-  position: fixed;
-  pointer-events: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  opacity: 0.5;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease;
-  z-index: 9999;
-  mix-blend-mode: screen;
 }
