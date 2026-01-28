@@ -1,49 +1,113 @@
 // Wait for DOM to be ready
 document.addEventListener('DOMContentLoaded', () => {
-  initWaveAnimation();
+  initTextureAnimation();
   initScrollAnimations();
 });
 
-// Wave width animation for the name
-function initWaveAnimation() {
+// Texture types available
+const TEXTURES = ['grainy', 'metallic', 'glass', 'matte'];
+
+// Texture and size animation for the name
+function initTextureAnimation() {
   const chars = document.querySelectorAll('.char');
-  const totalChars = chars.length;
 
-  // Animation parameters
-  const waveSpeed = 0.002; // Speed of the wave
-  const waveLength = 6; // How many characters span one wave cycle
-  const minScale = 0.7; // Minimum scaleX (condensed)
-  const maxScale = 1.4; // Maximum scaleX (expanded)
-  const minWeight = 300; // Minimum font weight
-  const maxWeight = 700; // Maximum font weight
+  // Initialize each character with its starting texture
+  chars.forEach((char, index) => {
+    const initialTexture = char.dataset.texture || TEXTURES[index % TEXTURES.length];
+    char.classList.add(`texture-${initialTexture}`);
+    char.currentTexture = initialTexture;
 
-  let time = 0;
+    // Random initial scale
+    const scale = 0.9 + Math.random() * 0.3;
+    char.style.transform = `scale(${scale})`;
+    char.currentScale = scale;
+  });
 
-  function animate() {
-    time += waveSpeed;
+  // Animate textures and sizes
+  function animateChar(char, index) {
+    // Random interval between texture changes (2-5 seconds)
+    const interval = 2000 + Math.random() * 3000;
 
-    chars.forEach((char, index) => {
-      // Calculate wave phase for this character
-      const phase = (index / waveLength) * Math.PI * 2;
-      const wave = Math.sin(time * Math.PI * 2 + phase);
+    setInterval(() => {
+      // Remove current texture class
+      char.classList.remove(`texture-${char.currentTexture}`);
 
-      // Map wave (-1 to 1) to scale range
-      const scale = minScale + ((wave + 1) / 2) * (maxScale - minScale);
+      // Pick a new random texture (different from current)
+      let newTexture;
+      do {
+        newTexture = TEXTURES[Math.floor(Math.random() * TEXTURES.length)];
+      } while (newTexture === char.currentTexture && TEXTURES.length > 1);
 
-      // Map wave to font weight
-      const weight = minWeight + ((wave + 1) / 2) * (maxWeight - minWeight);
+      // Apply new texture
+      char.classList.add(`texture-${newTexture}`);
+      char.currentTexture = newTexture;
 
-      // Apply the transformations
-      char.style.setProperty('--scale-x', scale);
-      char.style.setProperty('--font-weight', weight);
-      char.style.transform = `scaleX(${scale})`;
-      char.style.fontVariationSettings = `'wght' ${weight}`;
-    });
+      // Animate scale
+      const targetScale = 0.85 + Math.random() * 0.4;
+      animateScale(char, targetScale);
 
-    requestAnimationFrame(animate);
+    }, interval);
   }
 
-  animate();
+  // Smooth scale animation
+  function animateScale(char, targetScale) {
+    const startScale = char.currentScale;
+    const duration = 800;
+    const startTime = performance.now();
+
+    function step(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Easing function (ease-out cubic)
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      const currentScale = startScale + (targetScale - startScale) * eased;
+      char.style.transform = `scale(${currentScale})`;
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        char.currentScale = targetScale;
+      }
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  // Start animation for each character with staggered timing
+  chars.forEach((char, index) => {
+    setTimeout(() => {
+      animateChar(char, index);
+    }, index * 200);
+  });
+
+  // Also add subtle continuous movement
+  initSubtleMovement(chars);
+}
+
+// Subtle floating movement
+function initSubtleMovement(chars) {
+  chars.forEach((char, index) => {
+    const offsetX = Math.random() * Math.PI * 2;
+    const offsetY = Math.random() * Math.PI * 2;
+    const speedX = 0.5 + Math.random() * 0.5;
+    const speedY = 0.3 + Math.random() * 0.4;
+
+    function move() {
+      const time = performance.now() / 1000;
+      const x = Math.sin(time * speedX + offsetX) * 3;
+      const y = Math.sin(time * speedY + offsetY) * 2;
+
+      // Combine with current scale
+      const scale = char.currentScale || 1;
+      char.style.transform = `scale(${scale}) translate(${x}px, ${y}px)`;
+
+      requestAnimationFrame(move);
+    }
+
+    move();
+  });
 }
 
 // Scroll-triggered animations

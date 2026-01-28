@@ -3,6 +3,8 @@
   --color-primary: #758bfd;
   --color-dark: #180d34;
   --color-light: #aeb8fe;
+  --color-grey: #8a8a8a;
+  --color-silver: #c0c0c0;
 }
 
 /* Reset & Base Styles */
@@ -18,10 +20,18 @@ html {
 
 body {
   font-family: 'Outfit', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: var(--color-dark);
-  color: var(--color-light);
+  background-color: #b8b8b8;
+  color: var(--color-dark);
   overflow-x: hidden;
   line-height: 1.6;
+}
+
+/* Hide SVG filters */
+.filters {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
 }
 
 /* Hero Section */
@@ -32,7 +42,7 @@ body {
   justify-content: center;
   position: relative;
   overflow: hidden;
-  background: var(--color-dark);
+  background: linear-gradient(135deg, #c4c4c4 0%, #a0a0a0 50%, #b8b8b8 100%);
 }
 
 .hero-content {
@@ -41,15 +51,14 @@ body {
 }
 
 .name {
-  font-size: clamp(4rem, 15vw, 12rem);
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--color-light);
+  font-size: clamp(4rem, 18vw, 14rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
-  line-height: 0.9;
+  line-height: 0.85;
   text-transform: lowercase;
 }
 
@@ -58,14 +67,71 @@ body {
   white-space: nowrap;
 }
 
-/* Individual character - wave width animation */
+/* Individual character with texture */
 .char {
   display: inline-block;
-  font-variation-settings: 'wght' var(--font-weight, 400);
-  transform: scaleX(var(--scale-x, 1));
-  transform-origin: center center;
-  transition: transform 0.1s ease-out;
-  will-change: transform, font-variation-settings;
+  position: relative;
+  transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+              filter 0.8s ease,
+              opacity 0.8s ease;
+  will-change: transform, filter;
+}
+
+/* Grainy/Fuzzy texture - like felt or sand */
+.char.texture-grainy {
+  color: #7a7a7a;
+  filter: url(#grainy);
+  text-shadow:
+    1px 1px 2px rgba(0,0,0,0.3),
+    -1px -1px 1px rgba(255,255,255,0.2);
+}
+
+/* Metallic/Chrome texture - smooth and reflective */
+.char.texture-metallic {
+  background: linear-gradient(
+    180deg,
+    #e8e8e8 0%,
+    #a0a0a0 25%,
+    #707070 50%,
+    #909090 75%,
+    #d0d0d0 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: url(#metallic) contrast(1.1);
+  text-shadow: none;
+}
+
+/* Glass/Liquid texture - transparent and refractive */
+.char.texture-glass {
+  background: linear-gradient(
+    135deg,
+    rgba(255,255,255,0.9) 0%,
+    rgba(200,200,210,0.6) 30%,
+    rgba(180,180,190,0.4) 50%,
+    rgba(220,220,230,0.7) 70%,
+    rgba(255,255,255,0.8) 100%
+  );
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: url(#glass) blur(0.3px);
+  opacity: 0.85;
+}
+
+/* Matte texture - soft and diffused */
+.char.texture-matte {
+  color: #909090;
+  filter: url(#matte);
+  text-shadow:
+    2px 2px 4px rgba(0,0,0,0.2),
+    -1px -1px 2px rgba(255,255,255,0.3);
+}
+
+/* Default state before animation starts */
+.char:not([class*="texture-"]) {
+  color: #888;
 }
 
 /* Scroll Sections */
@@ -75,6 +141,7 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  background: linear-gradient(180deg, #b8b8b8 0%, #a8a8a8 100%);
 }
 
 .scroll-content {
@@ -92,45 +159,7 @@ body {
 .intro-text {
   font-size: clamp(1.5rem, 5vw, 4rem);
   font-weight: 300;
-  color: var(--color-primary);
+  color: #606060;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-}
-
-/* Scroll indicator */
-.hero::after {
-  content: '';
-  position: absolute;
-  bottom: 40px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 30px;
-  height: 50px;
-  border: 2px solid var(--color-primary);
-  border-radius: 25px;
-  opacity: 0.6;
-}
-
-.hero::before {
-  content: '';
-  position: absolute;
-  bottom: 52px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 6px;
-  height: 6px;
-  background: var(--color-primary);
-  border-radius: 50%;
-  animation: scrollIndicator 2s ease-in-out infinite;
-}
-
-@keyframes scrollIndicator {
-  0%, 100% {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-  50% {
-    transform: translateX(-50%) translateY(20px);
-    opacity: 0.3;
-  }
 }
