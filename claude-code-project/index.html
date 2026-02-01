@@ -4,26 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Thaïs Bendixen</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <main>
-    <section class="hero">
-      <div class="smoke-container">
-        <div class="smoke smoke-1"></div>
-        <div class="smoke smoke-2"></div>
-        <div class="smoke smoke-3"></div>
-        <div class="smoke smoke-4"></div>
+    <section class="hero" id="hero">
+      <!-- Floating 3D shapes -->
+      <div class="shapes-container" aria-hidden="true">
+        <div class="floating-shape floating-shape--sphere-lg" style="--x:5%;--y:15%;--drift-x:12px;--drift-y:18px;--dur:14s;--delay:0s"></div>
+        <div class="floating-shape floating-shape--sphere-md" style="--x:88%;--y:10%;--drift-x:-10px;--drift-y:14px;--dur:11s;--delay:-3s"></div>
+        <div class="floating-shape floating-shape--sphere-glass" style="--x:8%;--y:75%;--drift-x:8px;--drift-y:-16px;--dur:13s;--delay:-6s">
+          <div class="glass-highlight"></div>
+        </div>
+        <div class="floating-shape floating-shape--sphere-sm" style="--x:82%;--y:72%;--drift-x:-14px;--drift-y:10px;--dur:9s;--delay:-2s"></div>
+        <div class="floating-shape floating-shape--sphere-marble" style="--x:94%;--y:40%;--drift-x:-8px;--drift-y:-12px;--dur:16s;--delay:-8s">
+          <div class="marble-swirl"></div>
+        </div>
+        <div class="floating-shape floating-shape--sphere-xs" style="--x:18%;--y:42%;--drift-x:6px;--drift-y:10px;--dur:8s;--delay:-1s"></div>
+        <div class="floating-shape floating-shape--sphere-xs" style="--x:72%;--y:24%;--drift-x:-5px;--drift-y:-8px;--dur:10s;--delay:-5s"></div>
+        <div class="floating-shape floating-shape--cube" style="--x:2%;--y:52%;--drift-x:10px;--drift-y:-14px;--dur:15s;--delay:-4s">
+          <div class="cube">
+            <div class="cube-face cube-front"></div>
+            <div class="cube-face cube-back"></div>
+            <div class="cube-face cube-right"></div>
+            <div class="cube-face cube-left"></div>
+            <div class="cube-face cube-top"></div>
+            <div class="cube-face cube-bottom"></div>
+          </div>
+        </div>
+        <div class="floating-shape floating-shape--pyramid" style="--x:90%;--y:82%;--drift-x:-12px;--drift-y:8px;--dur:17s;--delay:-7s">
+          <div class="pyramid">
+            <div class="pyramid-face pyramid-front"></div>
+            <div class="pyramid-face pyramid-right"></div>
+            <div class="pyramid-face pyramid-back"></div>
+            <div class="pyramid-face pyramid-left"></div>
+            <div class="pyramid-face pyramid-bottom"></div>
+          </div>
+        </div>
       </div>
-      <div class="hero-content">
-        <h1 class="name">
-          <span class="char" style="--i: 0">T</span><span class="char" style="--i: 1">h</span><span class="char" style="--i: 2">a</span><span class="char" style="--i: 3">ï</span><span class="char" style="--i: 4">s</span><span class="char space" style="--i: 5">&nbsp;</span><span class="char" style="--i: 6">B</span><span class="char" style="--i: 7">e</span><span class="char" style="--i: 8">n</span><span class="char" style="--i: 9">d</span><span class="char" style="--i: 10">i</span><span class="char" style="--i: 11">x</span><span class="char" style="--i: 12">e</span><span class="char" style="--i: 13">n</span>
-        </h1>
+
+      <!-- Hero content: two-column on desktop -->
+      <div class="hero-inner">
+        <div class="hero-content">
+          <h1 class="hero-title">
+            <span class="hero-name">Thaïs Bendixen</span>
+          </h1>
+          <p class="hero-sub">Designer &amp; creative technologist crafting digital experiences that feel alive.</p>
+          <div class="hero-ctas">
+            <a href="#work" class="btn btn--primary">View my work</a>
+            <a href="#contact" class="btn btn--secondary">Get in touch</a>
+          </div>
+        </div>
+
+        <div class="hero-avatar-wrap">
+          <img
+            class="hero-avatar"
+            src="assets/avatar.png"
+            alt="Illustration of Thaïs Bendixen"
+            width="480"
+            height="580"
+            loading="eager"
+          >
+        </div>
       </div>
-      <div class="scroll-indicator"></div>
     </section>
 
-    <section class="scroll-section">
+    <section class="scroll-section" id="work">
       <div class="scroll-content">
         <p class="intro-text">Welcome</p>
       </div>
@@ -35,7 +84,7 @@
       </div>
     </section>
 
-    <section class="scroll-section">
+    <section class="scroll-section" id="contact">
       <div class="scroll-content">
         <p class="intro-text">More content coming soon</p>
       </div>
