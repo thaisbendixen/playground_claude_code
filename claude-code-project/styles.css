@@ -81,18 +81,25 @@ body {
   }
 }
 
-/* Continuous floating animation after initial load */
+/* Continuous irregular wave animation after initial load */
 .char.loaded {
-  animation: float 3s ease-in-out infinite;
-  animation-delay: calc(var(--i) * 0.15s);
+  opacity: 1;
+  animation: wave var(--wave-duration, 3s) ease-in-out infinite;
+  animation-delay: var(--wave-delay, 0s);
 }
 
-@keyframes float {
+@keyframes wave {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) translateX(0) rotate(0deg);
+  }
+  25% {
+    transform: translateY(calc(var(--wave-y, -8px))) translateX(calc(var(--wave-x, 2px))) rotate(calc(var(--wave-rot, 1deg)));
   }
   50% {
-    transform: translateY(-15px);
+    transform: translateY(calc(var(--wave-y, -8px) * 0.5)) translateX(calc(var(--wave-x, 2px) * -1)) rotate(calc(var(--wave-rot, 1deg) * -0.5));
+  }
+  75% {
+    transform: translateY(calc(var(--wave-y, -8px) * 0.8)) translateX(calc(var(--wave-x, 2px) * 0.5)) rotate(calc(var(--wave-rot, 1deg) * 0.3));
   }
 }
 
@@ -126,8 +133,7 @@ body {
 }
 
 /* Scroll indicator */
-.hero::after {
-  content: '';
+.scroll-indicator {
   position: absolute;
   bottom: 40px;
   left: 50%;
@@ -137,12 +143,13 @@ body {
   border: 2px solid var(--color-primary);
   border-radius: 25px;
   opacity: 0.6;
+  z-index: 2;
 }
 
-.hero::before {
+.scroll-indicator::before {
   content: '';
   position: absolute;
-  bottom: 52px;
+  top: 8px;
   left: 50%;
   transform: translateX(-50%);
   width: 6px;
@@ -163,12 +170,149 @@ body {
   }
 }
 
-/* Parallax background effect */
+/* Parallax background effect with smoky streaks */
 .hero {
-  background:
-    radial-gradient(ellipse at 20% 80%, rgba(117, 139, 253, 0.15) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(174, 184, 254, 0.1) 0%, transparent 50%),
-    var(--color-dark);
+  background: var(--color-dark);
+  position: relative;
+}
+
+/* Smoky background streaks */
+.smoke-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.smoke {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(50px);
+  opacity: 0;
+}
+
+.smoke-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(ellipse, var(--color-primary) 0%, transparent 70%);
+  bottom: -5%;
+  left: 20%;
+  animation: smokeRise1 12s ease-in-out infinite;
+}
+
+.smoke-2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(ellipse, var(--color-light) 0%, transparent 70%);
+  bottom: -10%;
+  left: 50%;
+  animation: smokeRise2 15s ease-in-out infinite;
+  animation-delay: -5s;
+}
+
+.smoke-3 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(ellipse, var(--color-primary) 0%, transparent 70%);
+  bottom: -8%;
+  left: 70%;
+  animation: smokeRise3 18s ease-in-out infinite;
+  animation-delay: -8s;
+}
+
+.smoke-4 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(ellipse, var(--color-light) 0%, transparent 70%);
+  bottom: -5%;
+  left: 35%;
+  animation: smokeRise1 14s ease-in-out infinite;
+  animation-delay: -3s;
+}
+
+/* Smoke rising animations with organic curling motion */
+@keyframes smokeRise1 {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.8) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.15;
+  }
+  30% {
+    transform: translateY(-25vh) translateX(30px) scale(1.2) rotate(10deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-50vh) translateX(-20px) scale(1.5) rotate(-5deg);
+    opacity: 0.15;
+  }
+  70% {
+    transform: translateY(-70vh) translateX(40px) scale(1.8) rotate(8deg);
+    opacity: 0.1;
+  }
+  90% {
+    opacity: 0.05;
+  }
+  100% {
+    transform: translateY(-100vh) translateX(10px) scale(2.2) rotate(-3deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokeRise2 {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6) rotate(0deg);
+    opacity: 0;
+  }
+  10% {
+    opacity: 0.12;
+  }
+  25% {
+    transform: translateY(-20vh) translateX(-40px) scale(1) rotate(-8deg);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateY(-45vh) translateX(25px) scale(1.4) rotate(6deg);
+    opacity: 0.15;
+  }
+  75% {
+    transform: translateY(-75vh) translateX(-30px) scale(1.9) rotate(-4deg);
+    opacity: 0.08;
+  }
+  100% {
+    transform: translateY(-105vh) translateX(15px) scale(2.4) rotate(2deg);
+    opacity: 0;
+  }
+}
+
+@keyframes smokeRise3 {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.7) rotate(0deg);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.18;
+  }
+  35% {
+    transform: translateY(-30vh) translateX(50px) scale(1.1) rotate(12deg);
+    opacity: 0.22;
+  }
+  55% {
+    transform: translateY(-55vh) translateX(-35px) scale(1.6) rotate(-7deg);
+    opacity: 0.14;
+  }
+  80% {
+    transform: translateY(-80vh) translateX(20px) scale(2) rotate(5deg);
+    opacity: 0.06;
+  }
+  100% {
+    transform: translateY(-110vh) translateX(-10px) scale(2.5) rotate(-2deg);
+    opacity: 0;
+  }
 }
 
 /* Mouse trail effect container */

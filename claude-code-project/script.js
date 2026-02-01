@@ -10,9 +10,22 @@ document.addEventListener('DOMContentLoaded', () => {
 function initCharacterAnimations() {
   const chars = document.querySelectorAll('.char');
 
-  // Add loaded class after initial animation completes
+  // Add loaded class after initial animation completes with irregular wave parameters
   setTimeout(() => {
-    chars.forEach(char => {
+    chars.forEach((char, index) => {
+      // Set random/irregular wave parameters for each character
+      const baseY = -6 - Math.random() * 8; // -6 to -14px
+      const baseX = (Math.random() - 0.5) * 6; // -3 to 3px
+      const baseRot = (Math.random() - 0.5) * 3; // -1.5 to 1.5deg
+      const duration = 2.5 + Math.random() * 2; // 2.5s to 4.5s
+      const delay = index * 0.1 + Math.random() * 0.3; // staggered with randomness
+
+      char.style.setProperty('--wave-y', `${baseY}px`);
+      char.style.setProperty('--wave-x', `${baseX}px`);
+      char.style.setProperty('--wave-rot', `${baseRot}deg`);
+      char.style.setProperty('--wave-duration', `${duration}s`);
+      char.style.setProperty('--wave-delay', `${delay}s`);
+
       char.classList.add('loaded');
     });
   }, 1500);
@@ -60,12 +73,11 @@ function initScrollAnimations() {
     if (!ticking) {
       requestAnimationFrame(() => {
         const scrollY = window.scrollY;
-        const opacity = Math.max(0, 1 - scrollY / 500);
-        const translateY = scrollY * 0.5;
-        const scale = Math.max(0.8, 1 - scrollY / 2000);
+        const translateY = scrollY * 0.2;
+        const scale = Math.max(0.95, 1 - scrollY / 4000);
 
         heroName.style.transform = `translateY(${translateY}px) scale(${scale})`;
-        heroName.style.opacity = opacity;
+        // Keep text fully visible, no opacity fade
 
         ticking = false;
       });
