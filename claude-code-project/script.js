@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initParallax();
+  initSpeechBubbleTap();
 });
 
 // Scroll-triggered reveal for sections below the hero
@@ -69,4 +70,20 @@ function initParallax() {
       avatarWrap.style.translate = `${ax}px ${ay}px`;
     }
   }
+}
+
+// Mobile tap fallback for speech bubble
+function initSpeechBubbleTap() {
+  const zone = document.querySelector('.hero-avatar-zone');
+  const bubble = document.querySelector('.speech-bubble');
+  if (!zone || !bubble) return;
+
+  zone.addEventListener('touchstart', (e) => {
+    e.stopPropagation();
+    bubble.classList.toggle('is-visible');
+  }, { passive: true });
+
+  document.addEventListener('touchstart', () => {
+    bubble.classList.remove('is-visible');
+  }, { passive: true });
 }

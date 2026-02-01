@@ -233,6 +233,76 @@ body {
   }
 }
 
+/* ═══════════════════════════════════════════
+   Avatar Proximity Zone & Speech Bubble
+   ═══════════════════════════════════════════ */
+.hero-avatar-zone {
+  position: relative;
+  padding: 20px;           /* invisible proximity hover area */
+  margin: -20px;           /* offset the padding so layout stays the same */
+}
+
+/* Speech bubble – pixel-art style */
+.speech-bubble {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  z-index: 10;
+  padding: 8px 14px;
+  background: #eeeaff;
+  border: 3px solid var(--color-dark);
+  color: var(--color-dark);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  image-rendering: pixelated;
+
+  /* hidden by default */
+  opacity: 0;
+  transform: scale(0.92) translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+/* Pixel tail pointing down-left toward avatar head */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: #eeeaff;
+  border-right: 3px solid var(--color-dark);
+  border-bottom: 3px solid var(--color-dark);
+  transform: rotate(45deg);
+  /* hide the top border overlap */
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+/* Show bubble: hover on proximity zone, or focus on avatar */
+.hero-avatar-zone:hover .speech-bubble,
+.hero-avatar-wrap:focus-visible ~ .speech-bubble {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Mobile tap: JS adds this class */
+.speech-bubble.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Reduced motion: instant show/hide */
+@media (prefers-reduced-motion: reduce) {
+  .speech-bubble {
+    transition: none;
+  }
+}
+
 @keyframes avatarFloat {
   0%, 100% {
     transform: translateY(0) rotate(0deg);
