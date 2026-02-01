@@ -74,6 +74,35 @@ body {
 }
 
 /* ═══════════════════════════════════════════
+   Topography Contour Lines Overlay
+   ─ Tweak opacity (--topo-opacity) and
+     background-size to adjust visibility/scale
+   ═══════════════════════════════════════════ */
+.topo-overlay {
+  --topo-opacity: 0.045;          /* ← adjust overall visibility here */
+  --topo-color: 117, 139, 253;    /* matches --color-primary (rgb) */
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--topo-opacity);
+  mix-blend-mode: multiply;
+
+  /* Radial mask: strongest in center, fades at edges */
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 30%, transparent 100%);
+
+  /*
+   * Inline SVG topography pattern – organic contour lines.
+   * background-size controls perceived scale / repetition.
+   */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='600' viewBox='0 0 600 600'%3E%3Cg fill='none' stroke='rgba(117%2C139%2C253%2C0.7)' stroke-width='1.2'%3E%3Cellipse cx='300' cy='300' rx='280' ry='180'/%3E%3Cellipse cx='300' cy='300' rx='240' ry='155'/%3E%3Cellipse cx='300' cy='300' rx='200' ry='130'/%3E%3Cellipse cx='300' cy='300' rx='160' ry='108'/%3E%3Cellipse cx='300' cy='300' rx='120' ry='85'/%3E%3Cellipse cx='300' cy='300' rx='80' ry='58'/%3E%3Cellipse cx='300' cy='300' rx='44' ry='32'/%3E%3Cpath d='M80 140 Q200 80 340 130 Q480 180 520 100'/%3E%3Cpath d='M60 200 Q180 130 330 185 Q490 240 550 170'/%3E%3Cpath d='M50 270 Q190 200 340 250 Q500 310 560 230'/%3E%3Cpath d='M60 340 Q200 280 350 320 Q500 370 560 300'/%3E%3Cpath d='M80 410 Q210 350 360 390 Q500 430 540 370'/%3E%3Cpath d='M100 470 Q230 420 370 450 Q490 480 530 430'/%3E%3Cpath d='M130 520 Q260 480 380 500 Q470 520 520 490'/%3E%3Cpath d='M40 100 Q100 60 200 95 Q320 140 400 90 Q460 60 560 110'/%3E%3Cpath d='M30 380 Q140 330 270 370 Q410 420 520 360 Q570 330 590 360'/%3E%3Cpath d='M100 540 Q220 510 350 535 Q440 550 540 520'/%3E%3Cellipse cx='150' cy='180' rx='90' ry='55' transform='rotate(-12 150 180)'/%3E%3Cellipse cx='150' cy='180' rx='55' ry='34' transform='rotate(-12 150 180)'/%3E%3Cellipse cx='450' cy='420' rx='100' ry='60' transform='rotate(15 450 420)'/%3E%3Cellipse cx='450' cy='420' rx='60' ry='36' transform='rotate(15 450 420)'/%3E%3Cellipse cx='450' cy='420' rx='28' ry='16' transform='rotate(15 450 420)'/%3E%3Cpath d='M20 440 Q90 400 180 435 Q280 470 350 445'/%3E%3Cpath d='M400 80 Q450 60 520 90 Q570 120 590 95'/%3E%3Cpath d='M10 50 Q80 30 180 70 Q300 120 400 60 Q500 10 590 55'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 900px 900px;   /* ← adjust scale here; larger = less repetition */
+  background-position: center;
+}
+
+/* ═══════════════════════════════════════════
    Hero Inner – Two-column layout
    ═══════════════════════════════════════════ */
 .hero-inner {
@@ -230,6 +259,76 @@ body {
     height: 40%;
     background: linear-gradient(to bottom, transparent 0%, var(--color-bg) 100%);
     pointer-events: none;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   Avatar Proximity Zone & Speech Bubble
+   ═══════════════════════════════════════════ */
+.hero-avatar-zone {
+  position: relative;
+  padding: 20px;           /* invisible proximity hover area */
+  margin: -20px;           /* offset the padding so layout stays the same */
+}
+
+/* Speech bubble – pixel-art style */
+.speech-bubble {
+  position: absolute;
+  top: -8px;
+  right: 0;
+  z-index: 10;
+  padding: 8px 14px;
+  background: #eeeaff;
+  border: 3px solid var(--color-dark);
+  color: var(--color-dark);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  image-rendering: pixelated;
+
+  /* hidden by default */
+  opacity: 0;
+  transform: scale(0.92) translateY(4px);
+  transition: opacity 150ms ease, transform 150ms ease;
+}
+
+/* Pixel tail pointing down-left toward avatar head */
+.speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -9px;
+  left: 18px;
+  width: 10px;
+  height: 10px;
+  background: #eeeaff;
+  border-right: 3px solid var(--color-dark);
+  border-bottom: 3px solid var(--color-dark);
+  transform: rotate(45deg);
+  /* hide the top border overlap */
+  clip-path: polygon(0 0, 100% 0, 100% 100%);
+}
+
+/* Show bubble: hover on proximity zone, or focus on avatar */
+.hero-avatar-zone:hover .speech-bubble,
+.hero-avatar-wrap:focus-visible ~ .speech-bubble {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Mobile tap: JS adds this class */
+.speech-bubble.is-visible {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+}
+
+/* Reduced motion: instant show/hide */
+@media (prefers-reduced-motion: reduce) {
+  .speech-bubble {
+    transition: none;
   }
 }
 
