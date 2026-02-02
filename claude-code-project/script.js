@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initScrollAnimations();
   initParallax();
   initSpeechBubbleTap();
+  initChickenCursor();
 });
 
 // Scroll-triggered reveal for sections below the hero
@@ -70,6 +71,85 @@ function initParallax() {
       avatarWrap.style.translate = `${ax}px ${ay}px`;
     }
   }
+}
+
+// Chicken cursor: fake cursor element for guaranteed 64–80px size.
+// Swaps to pecking image on mousedown, reverts on mouseup.
+function initChickenCursor() {
+  // Skip on touch-only devices (no fine pointer)
+  if (!window.matchMedia('(pointer: fine)').matches) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Create cursor element
+  const cursor = document.createElement('div');
+  cursor.id = 'chicken-cursor';
+  document.body.appendChild(cursor);
+
+  // Preload both images so the peck swap is instant
+  const imgStand = new Image();
+  imgStand.src = 'assets/chicken-stand.png';
+  const imgPeck = new Image();
+  imgPeck.src = 'assets/chicken-peck.png';
+
+  let mouseX = -100;
+  let mouseY = -100;
+  let rafScheduled = false;
+  let timer = null;
+
+  function updatePosition() {
+    // translate3d positions top-left at the mouse point,
+    // then translate(-50%, -50%) centers the image on it
+    cursor.style.transform =
+      `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+    rafScheduled = false;
+  }
+
+  // Show cursor and hide system cursor on first mouse move
+  document.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+
+    // Activate on first move
+    if (cursor.style.display !== 'block') {
+      cursor.style.display = 'block';
+      document.documentElement.classList.add('chicken-cursor-active');
+    }
+
+    if (!rafScheduled) {
+      rafScheduled = true;
+      requestAnimationFrame(updatePosition);
+    }
+  });
+
+  // Hide fake cursor and revert peck when mouse leaves the viewport
+  document.addEventListener('mouseleave', () => {
+    cursor.style.display = 'none';
+    cursor.classList.remove('pecking');
+    if (timer) { clearTimeout(timer); timer = null; }
+  });
+
+  document.addEventListener('mouseenter', () => {
+    cursor.style.display = 'block';
+  });
+
+  // Peck on click
+  document.addEventListener('mousedown', () => {
+    cursor.classList.add('pecking');
+
+    // Safety timeout: revert after 150ms even if mouseup never fires
+    if (!reducedMotion) {
+      timer = setTimeout(() => cursor.classList.remove('pecking'), 150);
+    }
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (timer) {
+      clearTimeout(timer);
+      timer = null;
+    }
+    cursor.classList.remove('pecking');
+  });
 }
 
 // Mobile tap fallback for speech bubble
