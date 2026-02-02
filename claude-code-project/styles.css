@@ -13,6 +13,47 @@
 }
 
 /* ═══════════════════════════════════════════
+   Custom Chicken Cursor
+   Uses a fake cursor element (#chicken-cursor)
+   positioned at the mouse point. System cursor
+   is hidden when the fake cursor is active.
+   ═══════════════════════════════════════════ */
+
+/* Tweak this variable to resize the cursor */
+:root {
+  --cursor-size: 61px; /* 72px × 0.85 ≈ 61px (15% smaller) */
+}
+
+/* Hide the system cursor everywhere */
+html.chicken-cursor-active,
+html.chicken-cursor-active *,
+html.chicken-cursor-active *::before,
+html.chicken-cursor-active *::after {
+  cursor: none !important;
+}
+
+/* The fake cursor element */
+#chicken-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--cursor-size);
+  height: var(--cursor-size);
+  pointer-events: none;
+  z-index: 99999;
+  will-change: transform;
+  background-image: url('assets/chicken-stand.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: none; /* shown by JS when mouse is detected */
+}
+
+#chicken-cursor.pecking {
+  background-image: url('assets/chicken-peck.png');
+}
+
+/* ═══════════════════════════════════════════
    Reset & Base
    ═══════════════════════════════════════════ */
 *, *::before, *::after {
