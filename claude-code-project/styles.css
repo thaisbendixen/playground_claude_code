@@ -1,16 +1,6 @@
 /* ═══════════════════════════════════════════
-   Color Palette
+   Color Palette — defined in design-system.css
    ═══════════════════════════════════════════ */
-:root {
-  --color-primary: #758bfd;
-  --color-dark: #180d34;
-  --color-light: #aeb8fe;
-  --color-bg: #fafaff;
-  --color-text: #1a1230;
-  --color-text-muted: #6b6580;
-  --color-primary-soft: rgba(117, 139, 253, 0.10);
-  --color-primary-mid: rgba(117, 139, 253, 0.25);
-}
 
 /* ═══════════════════════════════════════════
    Custom Chicken Cursor
@@ -67,7 +57,7 @@ html {
 }
 
 body {
-  font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans);
   background-color: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
@@ -167,11 +157,11 @@ body {
 }
 
 .hero-title {
-  font-size: clamp(2.6rem, 7vw, 5.5rem);
-  font-weight: 800;
-  line-height: 1.05;
-  letter-spacing: -0.03em;
-  margin-bottom: 12px;
+  font-size: var(--text-display);
+  font-weight: var(--weight-black);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-tight);
+  margin-bottom: var(--space-md);
 }
 
 /* Gradient text with animated shimmer */
@@ -198,10 +188,11 @@ body {
 }
 
 .hero-sub {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  font-weight: 400;
+  font-size: var(--text-body);
+  font-weight: var(--weight-regular);
   color: var(--color-text-muted);
-  line-height: 1.5;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-snug);
   max-width: 480px;
   margin-bottom: 44px;
   text-wrap: balance;
@@ -232,13 +223,14 @@ body {
   align-items: center;
   justify-content: center;
   padding: 14px 32px;
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   font-family: inherit;
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: var(--text-btn);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-snug);
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base);
 }
 
 .btn:focus-visible {
@@ -334,7 +326,7 @@ body {
   background: #eeeaff;
   border: 3px solid var(--color-dark);
   color: var(--color-dark);
-  font-family: 'Courier New', Courier, monospace;
+  font-family: var(--font-mono);
   font-size: 0.85rem;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -801,4 +793,397 @@ body {
   /* Scale down shapes on small screens */
   .floating-shape--sphere-lg  { width: 70px; height: 70px; }
   .floating-shape--sphere-glass { width: 55px; height: 55px; }
+}
+
+/* ═══════════════════════════════════════════
+   Snake Game — Console Card
+   ═══════════════════════════════════════════ */
+
+/* CSS variables for the console */
+:root {
+  --snake-outer-bg: #1c1838;
+  --snake-outer-radius: 24px;
+  --snake-inner-bg: #141030;
+  --snake-inner-radius: 16px;
+  --snake-text-muted: #8b8aaa;
+  --snake-text-dim: rgba(140, 140, 180, 0.45);
+  --snake-accent: #9b8aff;
+  --snake-pad: 32px;
+}
+
+.snake-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80px 24px 0;
+  background: var(--color-bg);
+}
+
+/* Playful intro above the card */
+.snake-intro {
+  font-family: var(--font-sans);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  text-align: center;
+  margin: 0 0 4px;
+  max-width: 600px;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--tracking-snug);
+}
+
+.snake-intro-sub {
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 2vw, 1.2rem);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: 0 0 32px;
+  max-width: 600px;
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-snug);
+}
+
+/* ── Outer console card ── */
+.snake-console-card {
+  --shadow-color: rgba(10, 6, 30, 0.6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 600px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(40, 34, 80, 0.5) 0%, transparent 60%),
+    linear-gradient(180deg, #201a42 0%, var(--snake-outer-bg) 30%, #181430 100%);
+  border-radius: var(--snake-outer-radius);
+  padding: var(--snake-pad) var(--snake-pad) 28px;
+  box-shadow:
+    0 2px 0 rgba(60, 50, 110, 0.15),
+    0 20px 60px var(--shadow-color),
+    0 4px 20px rgba(10, 6, 30, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Subtle vignette inside */
+.snake-console-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--snake-outer-radius);
+  box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.35);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── HUD (pixel font, dark bg) ── */
+.snake-hud {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  font-family: var(--font-retro);
+  font-size: 0.7rem;
+  color: var(--snake-text-muted);
+  background: none;
+  border-radius: 0;
+  padding: 4px 0 20px;
+  width: 100%;
+  box-sizing: border-box;
+  letter-spacing: var(--tracking-wide);
+  position: relative;
+  z-index: 1;
+}
+
+.snake-hud-item {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.snake-hud-val {
+  color: var(--snake-text-muted);
+  font-weight: 400;
+  font-family: var(--font-retro);
+}
+
+.snake-hud-btn {
+  background: none;
+  border: 1.5px solid rgba(140, 140, 180, 0.35);
+  color: var(--snake-text-muted);
+  font-family: var(--font-retro);
+  font-size: 0.55rem;
+  font-weight: 400;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  letter-spacing: 0.06em;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.snake-hud-btn:hover,
+.snake-hud-btn:focus-visible {
+  color: #ccc8e8;
+  border-color: var(--snake-accent);
+  background: rgba(155, 138, 255, 0.08);
+}
+
+/* ── Board window (inset panel) ── */
+.snake-board-window {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: var(--snake-inner-bg);
+  border-radius: var(--snake-inner-radius);
+  overflow: hidden;
+  box-shadow:
+    inset 0 2px 8px rgba(0, 0, 0, 0.5),
+    inset 0 0 20px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+/* ── Splash ── */
+.snake-splash {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  z-index: 2;
+  background: var(--snake-inner-bg);
+}
+
+.snake-splash.hidden {
+  display: none;
+}
+
+.snake-splash-canvas {
+  image-rendering: pixelated;
+  width: 240px;
+  height: 180px;
+}
+
+.snake-play-btn {
+  font-family: var(--font-retro);
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: #2a2450;
+  background: linear-gradient(180deg, #c8c0ee 0%, #a8a0d8 100%);
+  border: none;
+  padding: 18px 56px;
+  border-radius: 14px;
+  cursor: pointer;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: background 0.2s, transform 0.1s, box-shadow 0.2s;
+  box-shadow:
+    0 4px 12px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(200, 192, 238, 0.3) inset;
+}
+
+.snake-play-btn:hover,
+.snake-play-btn:focus-visible {
+  background: linear-gradient(180deg, #d8d0ff 0%, #b8b0e8 100%);
+  transform: translateY(1px);
+  box-shadow:
+    0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.snake-play-btn:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+.snake-splash-hint {
+  font-family: var(--font-retro);
+  font-size: 0.5rem;
+  color: var(--snake-text-dim);
+  margin: 0;
+  letter-spacing: 0.14em;
+}
+
+/* ── Board ── */
+.snake-board {
+  display: none;
+  position: absolute;
+  inset: 0;
+}
+
+.snake-board.active {
+  display: block;
+}
+
+#snake-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: pixelated;
+}
+
+/* ── Game Over ── */
+.snake-gameover {
+  display: none;
+  position: absolute;
+  inset: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background: rgba(16, 12, 36, 0.88);
+  backdrop-filter: blur(6px);
+  z-index: 3;
+}
+
+.snake-gameover.active {
+  display: flex;
+}
+
+.snake-gameover-title {
+  font-family: var(--font-retro);
+  font-size: 1.2rem;
+  font-weight: 400;
+  color: #fff;
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.snake-gameover-score {
+  font-family: var(--font-retro);
+  font-size: 0.65rem;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.5);
+  margin: 0;
+}
+
+/* ── D-pad (mobile) ── */
+.snake-dpad {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 16px;
+  z-index: 1;
+}
+
+.snake-dpad-row {
+  display: flex;
+  gap: 4px;
+}
+
+.snake-dpad-btn {
+  width: 52px;
+  height: 52px;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(155, 138, 255, 0.08);
+  color: var(--snake-accent);
+  border: 1.5px solid rgba(155, 138, 255, 0.2);
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+  transition: background 0.1s;
+}
+
+.snake-dpad-btn:active {
+  background: rgba(155, 138, 255, 0.2);
+  color: #fff;
+}
+
+@media (pointer: coarse) {
+  .snake-dpad {
+    display: flex;
+  }
+}
+
+/* ── Snake responsive ── */
+@media (max-width: 540px) {
+  .snake-section {
+    padding: 48px 16px 0;
+  }
+
+  .snake-intro {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+
+  .snake-intro-sub {
+    font-size: 0.95rem;
+  }
+
+  :root {
+    --snake-pad: 20px;
+  }
+
+  .snake-hud {
+    font-size: 0.55rem;
+    gap: 12px;
+  }
+
+  .snake-play-btn {
+    font-size: 0.75rem;
+    padding: 14px 40px;
+  }
+}
+
+/* ═══════════════════════════════════════════
+   More Coming Soon
+   ═══════════════════════════════════════════ */
+
+.coming-soon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 56px 24px 96px;
+  background: var(--color-bg);
+}
+
+.coming-soon-inner {
+  text-align: center;
+  max-width: 600px;
+}
+
+.coming-soon-heading {
+  font-family: var(--font-sans);
+  font-size: var(--text-h2);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text);
+  margin: 0 0 var(--space-md);
+  letter-spacing: var(--tracking-snug);
+  line-height: var(--leading-snug);
+}
+
+.coming-soon-sub {
+  font-family: var(--font-sans);
+  font-size: var(--text-body-sm);
+  font-weight: var(--weight-regular);
+  color: var(--color-text-muted);
+  margin: 0;
+  line-height: var(--leading-normal);
+}
+
+.coming-soon-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--weight-semibold);
+  transition: color var(--transition-base), text-decoration-color var(--transition-base);
+  text-underline-offset: 3px;
+}
+
+.coming-soon-link:hover {
+  color: var(--color-dark);
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary);
+}
+
+.coming-soon-link:focus-visible {
+  color: var(--color-dark);
+  text-decoration: underline;
+  outline: 2px solid var(--color-primary);
+  outline-offset: 3px;
+  border-radius: 2px;
 }

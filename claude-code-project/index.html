@@ -6,7 +6,8 @@
   <title>Thaïs Bendixen</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="design-system.css">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -57,7 +58,7 @@
           </h1>
           <p class="hero-sub">Product Manager by day, <br class="hero-sub-br"/>geospatial imagineer by night&#160;💭✨</p>
           <div class="hero-ctas">
-            <a href="#work" class="btn btn--primary">View my work</a>
+            <a href="#snake-game" class="btn btn--primary">View my work</a>
             <a href="#contact" class="btn btn--secondary">Get in touch</a>
           </div>
         </div>
@@ -78,25 +79,64 @@
       </div>
     </section>
 
-    <section class="scroll-section" id="work">
-      <div class="scroll-content">
-        <p class="intro-text">Welcome</p>
+    <!-- Snake Game -->
+    <section class="snake-section" id="snake-game">
+      <p class="snake-intro">This section is still under construction!</p>
+      <p class="snake-intro-sub">Fancy a round of Snake while you wait? 🐍✨</p>
+
+      <div class="snake-console-card">
+        <!-- Retro HUD -->
+        <div class="snake-hud" id="snake-hud">
+          <span class="snake-hud-item">SCORE: <span class="snake-hud-val" id="snake-score">000</span></span>
+          <span class="snake-hud-item">BEST: <span class="snake-hud-val" id="snake-best">000</span></span>
+          <button class="snake-hud-btn" id="snake-sound-btn" aria-pressed="true" aria-label="Toggle sound">SND:ON</button>
+        </div>
+
+        <!-- Board window (inset panel) -->
+        <div class="snake-board-window" id="snake-screen">
+
+          <!-- Splash (before Play) -->
+          <div class="snake-splash" id="snake-splash">
+            <canvas class="snake-splash-canvas" id="snake-splash-canvas" width="240" height="180"></canvas>
+            <button class="snake-play-btn" id="snake-play-btn">PLAY</button>
+            <p class="snake-splash-hint">ARROW KEYS / WASD</p>
+          </div>
+
+          <!-- Game board (hidden until Play) -->
+          <div class="snake-board" id="snake-board">
+            <canvas id="snake-canvas"></canvas>
+
+            <!-- Game Over overlay (inside board) -->
+            <div class="snake-gameover" id="snake-gameover">
+              <p class="snake-gameover-title">GAME OVER</p>
+              <p class="snake-gameover-score" id="snake-gameover-score">SCORE: 0</p>
+              <button class="snake-play-btn" id="snake-replay-btn">PLAY AGAIN</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mobile D-pad -->
+        <div class="snake-dpad" aria-label="Directional controls">
+          <button class="snake-dpad-btn snake-dpad-up" data-dir="up" aria-label="Up">&#9650;</button>
+          <div class="snake-dpad-row">
+            <button class="snake-dpad-btn snake-dpad-left" data-dir="left" aria-label="Left">&#9664;</button>
+            <button class="snake-dpad-btn snake-dpad-down" data-dir="down" aria-label="Down">&#9660;</button>
+            <button class="snake-dpad-btn snake-dpad-right" data-dir="right" aria-label="Right">&#9654;</button>
+          </div>
+        </div>
       </div>
     </section>
 
-    <section class="scroll-section">
-      <div class="scroll-content">
-        <p class="intro-text">Scroll to explore</p>
-      </div>
-    </section>
-
-    <section class="scroll-section" id="contact">
-      <div class="scroll-content">
-        <p class="intro-text">More content coming soon</p>
+    <!-- More Coming Soon -->
+    <section class="coming-soon" id="contact">
+      <div class="coming-soon-inner">
+        <h2 class="coming-soon-heading">More coming soon…</h2>
+        <p class="coming-soon-sub">In the meantime, feel free to reach out via <a href="https://www.linkedin.com/in/thais-bendixen/" target="_blank" rel="noopener noreferrer" class="coming-soon-link">LinkedIn</a>.</p>
       </div>
     </section>
   </main>
 
   <script src="script.js"></script>
+  <script src="snake-game.js"></script>
 </body>
 </html>
